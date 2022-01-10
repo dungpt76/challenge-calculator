@@ -27,9 +27,12 @@ public class CalculatorService implements ICalculatorService {
 		}
 		else {
 			String[] arrInput = inputText.split(",");
+			//Remove the maximum constraint for numbers
+			/*
 			if (arrInput.length > 2) {
 				throw new InvalidParametersException("Not support for more than two numbers");
 			}
+			*/
 			for (int index = 0; index < arrInput.length; index ++) {
 				String currentInput = arrInput[index];
 				Integer value = 0;

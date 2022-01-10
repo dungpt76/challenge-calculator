@@ -47,11 +47,22 @@ public class CalculatorServiceTests extends TestCase {
 		}
         
 		// Not support for more than two numbers
+        /*
         try {
 			output = calculatorService.ExecuteAdd("5,7,9");
 			fail("Not throw exception as expected");
         } catch (InvalidParametersException e) {
 			
+        }
+        */
+        
+        try {
+			// 1,2,3,4,5,6,7,8,9,10,11,12 will return 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 = 78
+        	output = calculatorService.ExecuteAdd("1,2,3,4,5,6,7,8,9,10,11,12");
+	        assertEquals("1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 = 78", output); 
+
+        } catch (InvalidParametersException e) {
+			fail("Unexpected exception");
         }
     }  
 }
