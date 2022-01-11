@@ -3,6 +3,8 @@ package com.restaurant365.services;
 import com.restaurant365.exceptions.InvalidParametersException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CalculatorService implements ICalculatorService {
 
@@ -34,14 +36,34 @@ public class CalculatorService implements ICalculatorService {
 				}
 				String additionalDelimiters = inputText.substring(2,firstNewLinePosition);
 				convertedInputText = inputText.substring(firstNewLinePosition + 1);
+				ArrayList<String> delimiters = new ArrayList<String>();
 				if (additionalDelimiters.length() > 1) {
 					if (!additionalDelimiters.startsWith("[") || !additionalDelimiters.endsWith("]") || (additionalDelimiters.length() < 3)) {
 						throw new InvalidParametersException("The input is invalid.");
 					}
-					additionalDelimiters = additionalDelimiters.substring(1, additionalDelimiters.length() -1);
+					// Extract all delimiters in square brackets
+					Pattern pattern = Pattern.compile("\\[(.*?)\\]");
+					Matcher matcher = pattern.matcher(additionalDelimiters);
+					String delimiterText = ""; // rebuild from matcher groups
+					while(matcher.find()) {
+						delimiterText = delimiterText + "[" + matcher.group(1) + "]";
+						delimiters.add(matcher.group(1));
+					}
+
+					if (!delimiterText.equals(additionalDelimiters)) {
+						throw new InvalidParametersException("Additional delimiters part is invalid: " + additionalDelimiters);
+					}
+					
+					//additionalDelimiters = additionalDelimiters.substring(1, additionalDelimiters.length() -1);
 				}
-				// standardize additionalDelimiters (some characters are reserved and we have to add the prefix \\ )
-				convertedInputText = replaceAll(convertedInputText, additionalDelimiters, ",");
+				else {
+					delimiters.add(additionalDelimiters);
+				}
+				
+				// standardize convertedInputText
+				for (String delimiter : delimiters) {
+					convertedInputText = replaceAll(convertedInputText, delimiter, ",");
+				}
 				
 			}
 			String[] arrInput = convertedInputText.split("[,\n]+");

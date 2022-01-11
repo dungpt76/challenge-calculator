@@ -64,6 +64,10 @@ public class CalculatorServiceTests extends TestCase {
 			output = calculatorService.ExecuteAdd("//[***]\n11***22***33");
 	        assertEquals("11 + 22 + 33 = 66", output); 
 	        
+	        // Support multiple delimiters of any length using the format: //[{delimiter1}][{delimiter2}]...\n{numbers}
+			output = calculatorService.ExecuteAdd("//[*][!!][r9r]\n11r9r22*hh*33!!44");
+	        assertEquals("11 + 22 + 0 + 33 + 44 = 110", output); 	        
+	        
 
         } catch (InvalidParametersException e) {
         	e.printStackTrace();
