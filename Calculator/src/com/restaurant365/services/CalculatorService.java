@@ -43,6 +43,10 @@ public class CalculatorService implements ICalculatorService {
 					if (value < 0) {
 						negativeNumbers.add(value);
 					}
+					else if (value > 1000) {
+						// Make any value greater than 1000 an invalid number
+						value = 0;
+					}
 				}
 				catch (NumberFormatException ex) {
 					// empty or invalid number will be converted to 0

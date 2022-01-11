@@ -24,9 +24,9 @@ public class CalculatorServiceTests extends TestCase {
 			output = calculatorService.ExecuteAdd("20");
 	        assertEquals("20", output);  
 
-	        // 1,5000 will return 1 + 5000 = 5001
+	        // 1,5000 will return 1 + 0 = 1
 			output = calculatorService.ExecuteAdd("1,5000");
-	        assertEquals("1 + 5000 = 5001", output);  
+	        assertEquals("1 + 0 = 1", output);  
 
 			// 4,-3 will return 4 + -3 = 1
 			/*
@@ -49,6 +49,10 @@ public class CalculatorServiceTests extends TestCase {
 	        assertEquals("5 + 7 + 0 = 12", output); 
 			output = calculatorService.ExecuteAdd("1\n2,3");
 	        assertEquals("1 + 2 + 3 = 6", output); 
+	        
+	        // Make any value greater than 1000 an invalid number e.g. 2,1001,6 will return 8
+			output = calculatorService.ExecuteAdd("2,1001,6");
+	        assertEquals("2 + 0 + 6 = 8", output); 
 
         } catch (InvalidParametersException e) {
 			fail("Unexpected exception");
