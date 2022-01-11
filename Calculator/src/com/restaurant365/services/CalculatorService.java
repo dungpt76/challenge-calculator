@@ -26,7 +26,7 @@ public class CalculatorService implements ICalculatorService {
 			result.add(0);
 		}
 		else {
-			String[] arrInput = inputText.split(",");
+			String[] arrInput = inputText.split("[,\n]+");
 			//Remove the maximum constraint for numbers
 			/*
 			if (arrInput.length > 2) {

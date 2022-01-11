@@ -41,6 +41,13 @@ public class CalculatorServiceTests extends TestCase {
 	        assertEquals("5 + 0 = 5", output); 
 			output = calculatorService.ExecuteAdd("abcd,tytyt");
 	        assertEquals("0 + 0 = 0", output); 
+	        
+	        // support new line as a delimiter
+			// invalid numbers should be converted to 0 e.g. 5,7\ntytyt will return 5 + 7 + 0 = 12
+			output = calculatorService.ExecuteAdd("5,7\ntytyt");
+	        assertEquals("5 + 7 + 0 = 12", output); 
+			output = calculatorService.ExecuteAdd("1\n2,3");
+	        assertEquals("1 + 2 + 3 = 6", output); 
 
         } catch (InvalidParametersException e) {
 			fail("Unexpected exception");
