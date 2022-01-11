@@ -33,16 +33,24 @@ public class CalculatorService implements ICalculatorService {
 				throw new InvalidParametersException("Not support for more than two numbers");
 			}
 			*/
+			ArrayList<Integer> negativeNumbers = new ArrayList<Integer>();
+					
 			for (int index = 0; index < arrInput.length; index ++) {
 				String currentInput = arrInput[index];
 				Integer value = 0;
 				try {
 					value = Integer.parseInt(currentInput);
+					if (value < 0) {
+						negativeNumbers.add(value);
+					}
 				}
 				catch (NumberFormatException ex) {
 					// empty or invalid number will be converted to 0
 				}
 				result.add(value);
+			}
+			if (negativeNumbers.size() > 0) {
+				throw new InvalidParametersException(String.format("Negative numbers %s are not supported.", negativeNumbers.toString()));
 			}
 		}
 		return result;

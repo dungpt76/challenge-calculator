@@ -29,9 +29,10 @@ public class CalculatorServiceTests extends TestCase {
 	        assertEquals("1 + 5000 = 5001", output);  
 
 			// 4,-3 will return 4 + -3 = 1
-			output = calculatorService.ExecuteAdd("4,-3");
+			/*
+	        output = calculatorService.ExecuteAdd("4,-3");
 	        assertEquals("4 + -3 = 1", output);  
-
+			*/	
 			// empty will return 0
 			output = calculatorService.ExecuteAdd("");
 	        assertEquals("0", output);  
@@ -70,6 +71,16 @@ public class CalculatorServiceTests extends TestCase {
 
         } catch (InvalidParametersException e) {
 			fail("Unexpected exception");
+        }
+        
+        // Negative numbers are not supported
+        
+        try {
+			// 1,2,3,4,5,6,7,8,9,10,11,12 will return 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 = 78
+        	output = calculatorService.ExecuteAdd("1,-2,3,-4");
+        	fail("Wrong implementation: the negative numbers must not be supported. Error message must include them.");
+        } catch (InvalidParametersException e) {
+	        assertEquals("Negative numbers [-2, -4] are not supported.", e.getMessage()); 
         }
     }  
 }
