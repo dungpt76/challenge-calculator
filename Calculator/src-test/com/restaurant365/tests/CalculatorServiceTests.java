@@ -53,6 +53,13 @@ public class CalculatorServiceTests extends TestCase {
 	        // Make any value greater than 1000 an invalid number e.g. 2,1001,6 will return 8
 			output = calculatorService.ExecuteAdd("2,1001,6");
 	        assertEquals("2 + 0 + 6 = 8", output); 
+	        
+	        // Support 1 custom delimiter of a single character using the format: //{delimiter}\n{numbers}
+			output = calculatorService.ExecuteAdd("//#\n2#5");
+	        assertEquals("2 + 5 = 7", output); 
+			output = calculatorService.ExecuteAdd("//,\n2,ff,100");
+	        assertEquals("2 + 0 + 100 = 102", output); 
+	        
 
         } catch (InvalidParametersException e) {
 			fail("Unexpected exception");

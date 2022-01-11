@@ -26,7 +26,18 @@ public class CalculatorService implements ICalculatorService {
 			result.add(0);
 		}
 		else {
-			String[] arrInput = inputText.split("[,\n]+");
+			String convertedInputText = inputText;
+			if (inputText.startsWith("//")) {
+				int firstNewLinePosition = inputText.indexOf("\n");
+				if (firstNewLinePosition != 3) {
+					throw new InvalidParametersException("The input is invalid.");
+				}
+				String additionalDelimiters = inputText.substring(2,firstNewLinePosition);
+				convertedInputText = inputText.substring(firstNewLinePosition + 1);
+				convertedInputText = convertedInputText.replaceAll(additionalDelimiters, ",");
+				
+			}
+			String[] arrInput = convertedInputText.split("[,\n]+");
 			//Remove the maximum constraint for numbers
 			/*
 			if (arrInput.length > 2) {
