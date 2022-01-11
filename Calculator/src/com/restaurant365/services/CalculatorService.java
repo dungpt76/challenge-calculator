@@ -29,12 +29,19 @@ public class CalculatorService implements ICalculatorService {
 			String convertedInputText = inputText;
 			if (inputText.startsWith("//")) {
 				int firstNewLinePosition = inputText.indexOf("\n");
-				if (firstNewLinePosition != 3) {
+				if (firstNewLinePosition < 3) {
 					throw new InvalidParametersException("The input is invalid.");
 				}
 				String additionalDelimiters = inputText.substring(2,firstNewLinePosition);
 				convertedInputText = inputText.substring(firstNewLinePosition + 1);
-				convertedInputText = convertedInputText.replaceAll(additionalDelimiters, ",");
+				if (additionalDelimiters.length() > 1) {
+					if (!additionalDelimiters.startsWith("[") || !additionalDelimiters.endsWith("]") || (additionalDelimiters.length() < 3)) {
+						throw new InvalidParametersException("The input is invalid.");
+					}
+					additionalDelimiters = additionalDelimiters.substring(1, additionalDelimiters.length() -1);
+				}
+				// standardize additionalDelimiters (some characters are reserved and we have to add the prefix \\ )
+				convertedInputText = replaceAll(convertedInputText, additionalDelimiters, ",");
 				
 			}
 			String[] arrInput = convertedInputText.split("[,\n]+");
@@ -68,6 +75,38 @@ public class CalculatorService implements ICalculatorService {
 				throw new InvalidParametersException(String.format("Negative numbers %s are not supported.", negativeNumbers.toString()));
 			}
 		}
+		return result;
+	}
+	
+	private String replaceAll(String input, String search, String replace) throws InvalidParametersException {
+		String result = "";
+		
+		if (replace.indexOf(search) >=0) {
+			if (replace.equals(search)) {
+				return input;
+			}
+			else {
+				throw new InvalidParametersException("Replace text includes search text");
+			}
+		}
+		String remainingText = input;
+		int index = remainingText.indexOf(search);
+		while (index >=0) {
+			String prefix = "";
+			if (index > 0) {
+				prefix = remainingText.substring(0, index);
+			}
+			result = result + prefix + replace;
+
+			if (prefix.length() + search.length() < remainingText.length()) {
+				remainingText = remainingText.substring(index + search.length());
+			}
+			else {
+				remainingText = "";
+			}
+			index = remainingText.indexOf(search);
+		}
+		result = result + remainingText;
 		return result;
 	}
 }

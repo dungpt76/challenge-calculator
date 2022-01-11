@@ -60,8 +60,13 @@ public class CalculatorServiceTests extends TestCase {
 			output = calculatorService.ExecuteAdd("//,\n2,ff,100");
 	        assertEquals("2 + 0 + 100 = 102", output); 
 	        
+	        // Support 1 custom delimiter of any length using the format: //[{delimiter}]\n{numbers}
+			output = calculatorService.ExecuteAdd("//[***]\n11***22***33");
+	        assertEquals("11 + 22 + 33 = 66", output); 
+	        
 
         } catch (InvalidParametersException e) {
+        	e.printStackTrace();
 			fail("Unexpected exception");
 		}
         
